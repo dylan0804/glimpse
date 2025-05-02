@@ -2,17 +2,24 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"glimpse/screenshots"
 )
 
 // App struct
 type App struct {
 	ctx context.Context
+	screenshotService screenshots.Service
+	ocr screenshots.OCRProvider
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{}
+	d := screenshots.NewDirProvider()
+	o := screenshots.NewOCRProvider()
+
+	return &App{
+		screenshotService: screenshots.NewScreenshotService(d, o),
+	}
 }
 
 // startup is called when the app starts. The context is saved
@@ -21,7 +28,13 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// func (a *App) shutdown(ctx context.Context) {
+// 	a.ocr.Close()
+// }
+
+func (a *App) ScanScreenshots() error {
+	a.screenshotService.ScanAndIndex()
+	return nil
 }
+
+
