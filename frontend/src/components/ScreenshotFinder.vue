@@ -3,14 +3,14 @@
     <div class="w-full max-w-4xl">
       <header class="mb-10">
         <h1 class="text-3xl sm:text-4xl font-light text-gray-800 tracking-tight">
-          <span class="text-blue-600 font-medium">Screenshot</span> Finder
+          <span class="text-blue-600 font-medium">Glimpse</span>
         </h1>
         <p class="text-gray-500 mt-2">Find text in your screenshots instantly</p>
       </header>
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
         <button
-          @click="init"
+          @click="scan"
           class="mb-6 px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md inline-flex items-center gap-2 transition-colors"
           :disabled="isScanning"
         >
@@ -309,7 +309,7 @@
     const isScanning = ref(false);
     const isSearching = ref(false);
     
-    async function init() {
+    async function scan() {
       if (isScanning.value) return;
       scanResults.value = [];
       isScanning.value = true;
