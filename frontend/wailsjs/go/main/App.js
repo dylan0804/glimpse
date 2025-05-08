@@ -5,3 +5,7 @@
 export function ScanScreenshots() {
   return window['go']['main']['App']['ScanScreenshots']();
 }
+
+export function SearchScreenshots(arg1) {
+  return window['go']['main']['App']['SearchScreenshots'](arg1);
+}
