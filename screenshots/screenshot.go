@@ -66,7 +66,7 @@ func (s *ScreenshotService) ScanAndIndex() error {
 	resultChan := make(chan ScreenshotDoc, len(entries))
 	errChan := make(chan error, 100)
 
-	err = s.OCR.WriteOCRHelper()
+	_, err = s.OCR.WriteOCRHelper()
 	if err != nil {
 		return fmt.Errorf("error reading binary for OR: %v", err)
 	}
