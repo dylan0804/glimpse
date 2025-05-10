@@ -68,7 +68,7 @@ func (m *mockFile) Write(b []byte) (int, error) {
 }
 
 func TestWriteOCRHelper(t *testing.T) {
-	t.Run("Success case", func(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
 		mockFile := &mockFile{name: "/tmp/test-ocr-binary"}
 		mockFileSystem := &mockFileSystem{tempFile: mockFile}
 
@@ -136,7 +136,7 @@ func (m *mockCmdRunner) Command(name string, arg ...string) ([]byte, error) {
 }
 
 func TestExtractText (t *testing.T) {
-	t.Run("Success case", func(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
 		cmdRunner := &mockCmdRunner{
 			output: []byte("text extracted from ss"),
 		}

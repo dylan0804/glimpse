@@ -118,7 +118,6 @@
                   ? 'text-blue-600 border-blue-600' 
                   : 'border-transparent hover:text-gray-600 hover:border-gray-300'
               ]"
-              @disabled="isScanning"
             >
               Search Results ({{ searchResults.length }})
             </button>
@@ -132,7 +131,6 @@
                   ? 'text-blue-600 border-blue-600' 
                   : 'border-transparent hover:text-gray-600 hover:border-gray-300'
               ]"
-              @disabled="isSearching"
             >
               Scan Results ({{ scanResults.length }})
             </button>
@@ -180,13 +178,35 @@
             <div
               v-for="(screenshot, index) in searchResults"
               :key="index"
-              class="rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+              class="rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow group relative"
             >
-              <img 
-                :src="screenshot.url" 
-                :alt="getFileName(screenshot.path)"
-                class="w-full h-40 object-cover object-top"
-              />
+              <div class="relative">
+                <img 
+                  :src="screenshot.url" 
+                  :alt="getFileName(screenshot.path)"
+                  class="w-full h-40 object-cover object-top"
+                />
+                <button 
+                  @click="openScreenshot(screenshot.url)"
+                  class="absolute top-2 right-2 p-2 bg-white/90 hover:bg-white rounded-full shadow-md text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  title="Open screenshot"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </button>
+              </div>
               <div class="p-3">
                 <p class="text-sm text-gray-700 truncate">{{ getFileName(screenshot.path) }}</p>
                 <p class="text-xs text-gray-400 truncate">{{ screenshot.path }}</p>
@@ -256,13 +276,35 @@
             <div
               v-for="(screenshot, index) in scanResults"
               :key="index"
-              class="rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+              class="rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow group relative"
             >
-              <img 
-                :src="screenshot.url" 
-                :alt="getFileName(screenshot.path)"
-                class="w-full h-40 object-cover object-top"
-              />
+              <div class="relative">
+                <img 
+                  :src="screenshot.url" 
+                  :alt="getFileName(screenshot.path)"
+                  class="w-full h-40 object-cover object-top"
+                />
+                <button 
+                  @click="openScreenshot(screenshot.url)"
+                  class="absolute top-2 right-2 p-2 bg-white/90 hover:bg-white rounded-full shadow-md text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  title="Open screenshot"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </button>
+              </div>
               <div class="p-3">
                 <p class="text-sm text-gray-700 truncate">{{ getFileName(screenshot.path) }}</p>
                 <p class="text-xs text-gray-400 truncate">{{ screenshot.path }}</p>
@@ -310,7 +352,7 @@
     const isSearching = ref(false);
     
     async function scan() {
-      if (isScanning.value) return;
+      if (isScanning.value || isSearching.value) return;
       scanResults.value = [];
       isScanning.value = true;
       activeTab.value = 'scan';
@@ -325,7 +367,7 @@
     }
 
     async function search() {
-      if (!searchQuery.value.trim() || isSearching.value) return;
+      if (!searchQuery.value.trim() || isSearching.value || isScanning.value) return;
       searchResults.value = [];
       isSearching.value = true;
       activeTab.value = 'search';
@@ -360,6 +402,39 @@
     function getFileName(path: string): string {
       if (!path) return 'Unknown File';
       return path.split(/[\\/]/).pop() || path;
+    }
+    
+    function openScreenshot(screenshot: string) {
+      // Open image in a new tab/window
+      const win = window.open();
+      if (win) {
+        win.document.write(`
+          <html>
+            <head>
+              <title>${getFileName(screenshot)}</title>
+              <style>
+                body { 
+                  margin: 0; 
+                  padding: 20px; 
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  min-height: 100vh;
+                  background-color: #f8fafc;
+                }
+                img { 
+                  max-width: 100%; 
+                  max-height: 90vh;
+                  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                }
+              </style>
+            </head>
+            <body>
+              <img src="${screenshot}" alt="${getFileName(screenshot)}" />
+            </body>
+          </html>
+        `);
+      }
     }
 </script>
 
