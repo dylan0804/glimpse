@@ -88,7 +88,7 @@ func (i *Indexer) Open() error {
 	if i.idx != nil {
 		return nil
 	}
-
+	
 	indexPath, err := i.GetIndexPath()
 	if err != nil {
 		return fmt.Errorf("failed to create directory for index: %v", err)
@@ -102,6 +102,8 @@ func (i *Indexer) Open() error {
 			if err != nil {
 				return err
 			}
+		} else {
+			return err
 		}
 	}
 
