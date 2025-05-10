@@ -170,6 +170,7 @@ func TestOpen(t *testing.T) {
 			userConfigDir: "user/config/dir",
 		}
 		i := NewMockIndexer("glimpse-test", "test.bleve", o, b, nil)
+		i.idx = nil
 
 		err := i.Open()
 		if err == nil || err.Error() != "error creating idx with mapping" {
