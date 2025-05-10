@@ -1,8 +1,8 @@
-# ✨ Glimpse ✨
+# Glimpse
 
 Ever spent ages scrolling through hundreds of screenshots trying to find that ONE image? "I know it had the word 'metrics' in it somewhere..." 🤔
 
-Glimpse solves this headache! This magical tool extracts text from your screenshots, remembers what's important, and lets you search by the words that appeared in your images. No more endless scrolling - just type what you remember and find it in seconds! ⚡
+Glimpse solves this headache! This magical tool extracts text from your screenshots, remembers what's important, and lets you search by the words that appeared in your images. No more endless scrolling - just type what you remember and find it in seconds!
 
 ## 🎯 Super Powers
 
